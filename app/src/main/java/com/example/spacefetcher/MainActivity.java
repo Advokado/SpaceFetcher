@@ -4,8 +4,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -13,20 +11,15 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.*;
-import java.util.logging.SimpleFormatter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         flight_number = findViewById(R.id.flightNumTxt);
-        mission_nameTxt =   findViewById(R.id.missionNameTxt);
+        mission_nameTxt = findViewById(R.id.missionNameTxt);
         rocket_nameTxt = findViewById(R.id.rocketNameTxt);
         launch_dateTxt = findViewById(R.id.launchDateTxt);
         launch_siteTxt = findViewById(R.id.launchSiteTxt);
@@ -71,28 +64,26 @@ public class MainActivity extends AppCompatActivity {
         jsonParse();
     }
 
+
     public void jsonParse() {
         String url = "https://api.spacexdata.com/v3/launches";
         final int y = 20;
 
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+        final JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                for (int i = 0; i < y; i++)
-
+                for (int i = 0; i < response.length(); i++)
                     try {
                         JSONObject jsonObject = response.getJSONObject(i);
                         String flight_number = jsonObject.getString("flight_number");
                         String mission_name = jsonObject.getString("mission_name");
 
-                        String launch_dateRaw = jsonObject.getString("launch_date_utc");
-                        String launch_date = launch_dateRaw.substring(0, launch_dateRaw.length()-14);
+                        // Launch date
+                        String launch_dateRaw = jsonObject.getString("launch_date_local");
+                        String launch_date = launch_dateRaw.substring(0, launch_dateRaw.length()-15).replace(" \"", "");
 
+                        Date todaysDate = Calendar.getInstance().getTime();
 
-                        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
-                        String dateInString = launch_date;
-
-                        Date date = format.parse(dateInString);
 
 
 
@@ -101,12 +92,12 @@ public class MainActivity extends AppCompatActivity {
                         String image_patch_link = imagePatchObj.getString("mission_patch_small");
 
 
-                        //Launch site
+                        // Launch site
                         JSONObject launchSiteObj = jsonObject.getJSONObject("launch_site");
                         String launch_site = launchSiteObj.getString("site_name");
 
 
-                        //gets nested objects withing "rocket" array
+                        // Fetch nested objects withing "rocket" array
                         JSONObject rocket = jsonObject.getJSONObject("rocket");
                         String rocket_name = rocket.getString("rocket_name");
 
@@ -114,18 +105,29 @@ public class MainActivity extends AppCompatActivity {
                         JSONObject second_stage = rocket.getJSONObject("second_stage");
                         JSONArray payload = second_stage.getJSONArray("payloads");
 
+                        // Customer
                         JSONObject customerObj = payload.getJSONObject(0);
                         String customerRaw = customerObj.getString("customers");
-                        String customer = customerRaw.substring(2, customerRaw.length()-2);
-                        //String customer = "hej";
+                        String customer = customerRaw.substring(2, customerRaw.length()-2).replace("\"", "");
 
 
-                        MyData data = new MyData(image_patch_link, flight_number, mission_name, rocket_name, customer, launch_site, date);
+
+                        Collections.sort(data_list, new Comparator<MyData>() {
+                            @Override
+                            public int compare(MyData o1, MyData o2) {
+
+                                return o2.getLaunch_date().compareTo(o1.getLaunch_date());
+                            }
+                        });
+
+
+
+                        MyData data = new MyData(image_patch_link, flight_number, mission_name, rocket_name, customer, launch_site, launch_date);
                         data_list.add(data);
 
 
                         adapter.notifyDataSetChanged();
-                    } catch (JSONException | ParseException e) {
+                    } catch (JSONException e) {
                         e.printStackTrace();
                     }
             }

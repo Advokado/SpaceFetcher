@@ -9,10 +9,11 @@ public class MyData {
     private String Flight_number;
     private String Customer;
     private String launch_site;
-    private Date launch_date;
+    private String launch_date;
     private String image_patch_link;
+    private Date todaysDate;
 
-    public MyData(String image_patch_link, String flight_number, String mission_name, String rocket_name, String customer, String launch_site, Date launch_date) {
+    public MyData(String image_patch_link, String flight_number, String mission_name, String rocket_name, String customer, String launch_site, String launch_date) {
         this.image_patch_link = image_patch_link;
         this.Mission_name = mission_name;
         this.Flight_number = flight_number;
@@ -20,6 +21,7 @@ public class MyData {
         this.Customer = customer;
         this.launch_site = launch_site;
         this.launch_date = launch_date;
+
     }
 
     public String getMission_name() {
@@ -62,11 +64,11 @@ public class MyData {
         this.launch_site = launch_site;
     }
 
-    public Date getLaunch_date() {
+    public String getLaunch_date() {
         return launch_date;
     }
 
-    public void setLaunch_date(Date launch_date) {
+    public void setLaunch_date(String launch_date) {
         this.launch_date = launch_date;
     }
 
@@ -76,9 +78,5 @@ public class MyData {
 
     public void setImage_patch_link(String image_patch_link) {
         this.image_patch_link = image_patch_link;
-    }
-
-    public int compareTo(MyData md) {
-        return getLaunch_date().compareTo(md.getLaunch_date());
     }
 }

@@ -88,10 +88,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
 
     }
-    public static Date toDate(String value) throws ParseException {
-        DateFormat format = new SimpleDateFormat("d MMMM yyyy", Locale.ENGLISH);
-        return format.parse(value);
-    }
 
     @Override
     public int getItemCount() {
