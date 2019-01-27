@@ -13,13 +13,13 @@
 
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/image_patch"
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="12dp"
                 android:src="@mipmap/ic_launcher"
 />
 
@@ -81,7 +81,8 @@
                 android:id="@+id/launchDateTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Launch date here" />
+                android:text="Launch date here"
+                android:textSize="12sp"/>
         </LinearLayout>
 
     </android.support.v7.widget.CardView>

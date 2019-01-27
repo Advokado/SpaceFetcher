@@ -10,7 +10,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
@@ -27,22 +34,25 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        public TextView mission_nameTxt;
+        TextView flight_numberTxt;
+        TextView mission_nameTxt;
         TextView rocket_nameTxt;
+        TextView customerTxt;
         TextView launch_siteTxt;
         TextView launch_dateTxt;
-        TextView customerTxt;
-        CardView cv;
+        ImageView image_patch;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-
+            flight_numberTxt = itemView.findViewById(R.id.flightNumTxt);
             mission_nameTxt = (TextView) itemView.findViewById(R.id.missionNameTxt);
-            //rocket_nameTxt = itemView.findViewById(R.id.rocketNameTxt);
-            //launch_dateTxt = itemView.findViewById(R.id.launchDateTxt);
-            //launch_siteTxt = itemView.findViewById(R.id.launchSiteTxt);
-            //customerTxt = itemView.findViewById(R.id.customerTxt);
+            rocket_nameTxt = itemView.findViewById(R.id.rocketNameTxt);
+            customerTxt = itemView.findViewById(R.id.customerTxt);
+            launch_dateTxt = itemView.findViewById(R.id.launchDateTxt);
+            launch_siteTxt = itemView.findViewById(R.id.launchSiteTxt);
+            image_patch = itemView.findViewById(R.id.image_patch);
 
 
 
@@ -63,11 +73,30 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
+        holder.flight_numberTxt.setText(my_data.get(position).getFlight_number());
         holder.mission_nameTxt.setText(my_data.get(position).getMission_name());
+        holder.rocket_nameTxt.setText(my_data.get(position).getRocket_name());
+        holder.customerTxt.setText(my_data.get(position).getCustomer());
+
+
+
+
+        holder.launch_dateTxt.setText(my_data.get(position).getLaunch_date().toString());
+        holder.launch_siteTxt.setText(my_data.get(position).getLaunch_site());
+
+        Glide.with(context).load(my_data.get(position).getImage_patch_link()).into(holder.image_patch);
+
+
+    }
+    public static Date toDate(String value) throws ParseException {
+        DateFormat format = new SimpleDateFormat("d MMMM yyyy", Locale.ENGLISH);
+        return format.parse(value);
     }
 
     @Override
     public int getItemCount() {
         return my_data.size();
     }
+
+
 }
