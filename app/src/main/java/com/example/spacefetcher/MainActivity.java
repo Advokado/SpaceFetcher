@@ -17,6 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.*;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         jsonParse();
+
     }
 
 
@@ -72,20 +74,30 @@ public class MainActivity extends AppCompatActivity {
         final JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                for (int i = 0; i < response.length(); i++)
+                for (int i = response.length()-1; i>=0; i--)
                     try {
                         JSONObject jsonObject = response.getJSONObject(i);
-                        String flight_number = jsonObject.getString("flight_number");
-                        String mission_name = jsonObject.getString("mission_name");
 
                         // Launch date
-                        String launch_dateRaw = jsonObject.getString("launch_date_local");
-                        String launch_date = launch_dateRaw.substring(0, launch_dateRaw.length()-15).replace(" \"", "");
+                        String launch_dateRaw = jsonObject.getString("launch_date_unix");
+                        //String launch_date = launch_dateRaw.substring(0, launch_dateRaw.length()-15).replace(" \"", "");
+
 
                         Date todaysDate = Calendar.getInstance().getTime();
 
 
+                        Long timestamp = Long.parseLong(launch_dateRaw);
+                        Date date = new java.util.Date(timestamp*1000L);
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+                        sdf.setTimeZone(TimeZone.getTimeZone("CET"));
+                        String formattedDate = sdf.format(date);
 
+
+
+
+                        // Flight Information
+                        String flight_number = jsonObject.getString("flight_number");
+                        String mission_name = jsonObject.getString("mission_name");
 
                         // Mission image Patch
                         JSONObject imagePatchObj = jsonObject.getJSONObject("links");
@@ -105,13 +117,17 @@ public class MainActivity extends AppCompatActivity {
                         JSONObject second_stage = rocket.getJSONObject("second_stage");
                         JSONArray payload = second_stage.getJSONArray("payloads");
 
-                        // Customer
+
+
+                         // Customer
                         JSONObject customerObj = payload.getJSONObject(0);
                         String customerRaw = customerObj.getString("customers");
                         String customer = customerRaw.substring(2, customerRaw.length()-2).replace("\"", "");
 
+                        //String customer = "hej";
 
 
+                        /*
                         Collections.sort(data_list, new Comparator<MyData>() {
                             @Override
                             public int compare(MyData o1, MyData o2) {
@@ -119,17 +135,22 @@ public class MainActivity extends AppCompatActivity {
                                 return o2.getLaunch_date().compareTo(o1.getLaunch_date());
                             }
                         });
+                        */
 
 
 
-                        MyData data = new MyData(image_patch_link, flight_number, mission_name, rocket_name, customer, launch_site, launch_date);
+                        MyData data = new MyData(image_patch_link, flight_number, mission_name, rocket_name, customer, launch_site, formattedDate);
                         data_list.add(data);
+
+
+
 
 
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
             }
         }, new Response.ErrorListener() {
             @Override
