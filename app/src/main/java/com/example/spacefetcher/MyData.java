@@ -11,7 +11,6 @@ public class MyData {
     private String launch_site;
     private String launch_date;
     private String image_patch_link;
-    private Date todaysDate;
 
     public MyData(String image_patch_link, String flight_number, String mission_name, String rocket_name, String customer, String launch_site, String launch_date) {
         this.image_patch_link = image_patch_link;

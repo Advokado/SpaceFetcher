@@ -17,6 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,14 +84,21 @@ public class MainActivity extends AppCompatActivity {
                         //String launch_date = launch_dateRaw.substring(0, launch_dateRaw.length()-15).replace(" \"", "");
 
 
-                        Date todaysDate = Calendar.getInstance().getTime();
+
 
 
                         Long timestamp = Long.parseLong(launch_dateRaw);
                         Date date = new java.util.Date(timestamp*1000L);
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
                         sdf.setTimeZone(TimeZone.getTimeZone("CET"));
-                        String formattedDate = sdf.format(date);
+                        String formattedDate = sdf.format(date);                    // String
+                        final Date datum = sdf.parse(formattedDate);                // Date
+
+                        final Date todaysDate = Calendar.getInstance().getTime();   // Date
+                        String dettaDatum = sdf.format(todaysDate);                 // String
+
+
+
 
 
 
@@ -122,21 +130,33 @@ public class MainActivity extends AppCompatActivity {
                          // Customer
                         JSONObject customerObj = payload.getJSONObject(0);
                         String customerRaw = customerObj.getString("customers");
-                        String customer = customerRaw.substring(2, customerRaw.length()-2).replace("\"", "");
+                        final String customer = customerRaw.substring(2, customerRaw.length()-2).replace("\"", "");
 
                         //String customer = "hej";
 
 
-                        /*
+/*
                         Collections.sort(data_list, new Comparator<MyData>() {
                             @Override
                             public int compare(MyData o1, MyData o2) {
+                                if(datum.after(todaysDate)){
+                                    customerTxt.setText("hejhejhejhej");
+                                }
 
                                 return o2.getLaunch_date().compareTo(o1.getLaunch_date());
                             }
                         });
-                        */
+*/
 
+
+                        // Upcoming or nah
+                        String upcoming = jsonObject.getString("upcoming");
+                        if(upcoming.contains("true")){
+
+                        }
+                        else if(upcoming.contains("false")){
+
+                        }
 
 
                         MyData data = new MyData(image_patch_link, flight_number, mission_name, rocket_name, customer, launch_site, formattedDate);
@@ -148,6 +168,8 @@ public class MainActivity extends AppCompatActivity {
 
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (ParseException e) {
                         e.printStackTrace();
                     }
 

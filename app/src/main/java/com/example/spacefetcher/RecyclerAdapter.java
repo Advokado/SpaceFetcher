@@ -9,15 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
+
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
@@ -46,13 +40,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         public ViewHolder(View itemView) {
             super(itemView);
 
-            flight_numberTxt = itemView.findViewById(R.id.flightNumTxt);
-            mission_nameTxt = (TextView) itemView.findViewById(R.id.missionNameTxt);
-            rocket_nameTxt = itemView.findViewById(R.id.rocketNameTxt);
-            customerTxt = itemView.findViewById(R.id.customerTxt);
-            launch_dateTxt = itemView.findViewById(R.id.launchDateTxt);
-            launch_siteTxt = itemView.findViewById(R.id.launchSiteTxt);
-            image_patch = itemView.findViewById(R.id.image_patch);
+            flight_numberTxt =  itemView.findViewById(R.id.flightNumTxt);
+            mission_nameTxt =   itemView.findViewById(R.id.missionNameTxt);
+            rocket_nameTxt =    itemView.findViewById(R.id.rocketNameTxt);
+            customerTxt =       itemView.findViewById(R.id.customerTxt);
+            launch_dateTxt =    itemView.findViewById(R.id.launchDateTxt);
+            launch_siteTxt =    itemView.findViewById(R.id.launchSiteTxt);
+            image_patch =       itemView.findViewById(R.id.image_patch);
 
 
 
@@ -81,7 +75,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
 
 
-        holder.launch_dateTxt.setText(my_data.get(position).getLaunch_date().toString());
+        holder.launch_dateTxt.setText(my_data.get(position).getLaunch_date());
         holder.launch_siteTxt.setText(my_data.get(position).getLaunch_site());
 
         Glide.with(context).load(my_data.get(position).getImage_patch_link()).into(holder.image_patch);
