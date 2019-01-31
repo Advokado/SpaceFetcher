@@ -2,7 +2,7 @@ package com.example.spacefetcher;
 
 import java.util.Date;
 
-public class MyData {
+public class upComingLaunches {
 
     private String Mission_name;
     private String Rocket_name;
@@ -11,8 +11,16 @@ public class MyData {
     private String launch_site;
     private String launch_date;
     private String image_patch_link;
+    private String reusedFS;
+    private String reusedFairings;
+    private String landingIntent;
 
-    public MyData(String image_patch_link, String flight_number, String mission_name, String rocket_name, String customer, String launch_site, String launch_date) {
+    public upComingLaunches(String image_patch_link, String flight_number, String mission_name,
+                            String rocket_name, String customer, String launch_site, String launch_date,
+                            String reusedFS, String reusedFairings, String landingIntent) {
+
+
+
         this.image_patch_link = image_patch_link;
         this.Mission_name = mission_name;
         this.Flight_number = flight_number;
@@ -20,6 +28,9 @@ public class MyData {
         this.Customer = customer;
         this.launch_site = launch_site;
         this.launch_date = launch_date;
+        this.reusedFS = reusedFS;
+        this.reusedFairings = reusedFairings;
+        this.landingIntent = landingIntent;
 
     }
 
@@ -71,11 +82,34 @@ public class MyData {
         this.launch_date = launch_date;
     }
 
-    public String getImage_patch_link() {
-        return image_patch_link;
-    }
+    public String getImage_patch_link() { return image_patch_link; }
 
     public void setImage_patch_link(String image_patch_link) {
         this.image_patch_link = image_patch_link;
+    }
+
+    public String getReusedFS() {
+        return reusedFS;
+    }
+
+    public void setReusedFS(String reusedFS) {
+        this.reusedFS = reusedFS;
+    }
+
+    public String getReusedFairings() {
+        return reusedFairings;
+    }
+
+    public void setReusedFairings(String reusedFairings) {
+        this.reusedFairings = reusedFairings;
+    }
+
+
+    public String getLandingIntent() {
+        return landingIntent;
+    }
+
+    public void setLandingIntent(String landingIntent) {
+        this.landingIntent = landingIntent;
     }
 }

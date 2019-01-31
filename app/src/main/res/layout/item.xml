@@ -4,85 +4,127 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cv"
     android:layout_width="match_parent"
-    android:layout_height="140dp"
+    android:layout_height="250dp"
     android:layout_margin="5dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
 
-            <ImageView
-                android:id="@+id/image_patch"
-                android:layout_width="96dp"
-                android:layout_height="96dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="12dp"
-                android:src="@mipmap/ic_launcher"
-/>
+        <ImageView
+            android:id="@+id/image_patch"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="12dp"
+            android:src="@mipmap/ic_launcher" />
 
-            <TextView
-                android:id="@+id/flightNumTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingRight="8dp"
-                android:text="#1234" />
 
-            <TextView
-                android:id="@+id/missionNameTxt"
-                android:layout_width="205dp"
-                android:layout_height="18dp"
-                android:text="Mission name here"
-                android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/missionNameTxt"
+            android:layout_width="285dp"
+            android:layout_height="53dp"
+            android:padding="0dp"
+            android:text="Mission name here"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
-        </LinearLayout>
+    </LinearLayout>
 
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="212dp"
+        android:layout_marginStart="110dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="0dp"
+        android:orientation="vertical"
+
+        android:paddingLeft="0dp"
+        android:paddingTop="10dp"
+        android:paddingRight="0dp"
+        android:paddingBottom="1dp"
+
+        >
+
+
+        <TextView
+            android:id="@+id/rocketNameTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="rocket name here" />
+
+        <TextView
+            android:id="@+id/customerTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="customer name here"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="38dp" />
+
+        <TextView
+            android:id="@+id/emptySpaceTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" " />
+
+        <TextView
+            android:id="@+id/launchSiteTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Launch site here" />
+
+        <TextView
+            android:id="@+id/reusedFSTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="110dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="8dp"
-            android:orientation="vertical"
-            android:padding="4dp"
-            >
+            android:text="Reused First Stage Yes/No"
+
+            />
+
+        <TextView
+            android:id="@+id/fairing_recovery_attemptTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Faring recovery attempt Yes/No"
+
+            />
+
+        <TextView
+            android:id="@+id/reused_fairingsTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reused fairings here Yes/NO"
+
+            />
 
 
-            <TextView
-                android:id="@+id/rocketNameTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="rocket name here" />
+        <TextView
+            android:id="@+id/flightNumTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="FairingsRecovered Yes/No"
 
-            <TextView
-                android:id="@+id/customerTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="customer name here"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="38dp" />
+            />
 
-            <TextView
-                android:id="@+id/launchSiteTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Launch site here" />
-            <TextView
-                android:id="@+id/emptySpaceTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" " />
+        <TextView
 
-            <TextView
-                android:id="@+id/launchDateTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Launch date here"
-                android:textSize="12sp"/>
-        </LinearLayout>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+
+            />
+
+
+        <TextView
+            android:id="@+id/launchDateTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Launch date here"
+            android:textSize="12sp" />
+    </LinearLayout>
 
     </android.support.v7.widget.CardView>

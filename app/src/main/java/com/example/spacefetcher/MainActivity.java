@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
-    List<MyData> data_list;
+    List<upComingLaunches> data_list;
     RequestQueue mqueue;
 
 
@@ -39,6 +40,12 @@ public class MainActivity extends AppCompatActivity {
     TextView launch_siteTxt;
     TextView customerTxt;
     TextView flight_number;
+    TextView reusedFSTxt;
+    TextView reusedFairingsTxt;
+    TextView fairing_recovery_attemptTxt;
+
+
+    TextView test;
 
 
     @Override
@@ -60,74 +67,109 @@ public class MainActivity extends AppCompatActivity {
         launch_dateTxt = findViewById(R.id.launchDateTxt);
         launch_siteTxt = findViewById(R.id.launchSiteTxt);
         customerTxt = findViewById(R.id.customerTxt);
+        reusedFSTxt = findViewById(R.id.reusedFSTxt);
+        reusedFairingsTxt = findViewById(R.id.reused_fairingsTxt);
+        fairing_recovery_attemptTxt = findViewById(R.id.fairing_recovery_attemptTxt);
+
+
+
+
+
+        test = findViewById(R.id.test);
 
 
 
         jsonParse();
+
 
     }
 
 
     public void jsonParse() {
         String url = "https://api.spacexdata.com/v3/launches";
-        final int y = 20;
 
         final JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                for (int i = response.length()-1; i>=0; i--)
+                for (int i = response.length()-1; i >= 0; i--) {
                     try {
                         JSONObject jsonObject = response.getJSONObject(i);
 
                         // Launch date
                         String launch_dateRaw = jsonObject.getString("launch_date_unix");
-                        //String launch_date = launch_dateRaw.substring(0, launch_dateRaw.length()-15).replace(" \"", "");
-
-
-
-
-
                         Long timestamp = Long.parseLong(launch_dateRaw);
-                        Date date = new java.util.Date(timestamp*1000L);
+                        Date date = new Date(timestamp * 1000L);
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
                         sdf.setTimeZone(TimeZone.getTimeZone("CET"));
-                        String formattedDate = sdf.format(date);                    // String
-                        final Date datum = sdf.parse(formattedDate);                // Date
-
-                        final Date todaysDate = Calendar.getInstance().getTime();   // Date
-                        String dettaDatum = sdf.format(todaysDate);                 // String
-
-
-
-
-
+                        String formattedDate = sdf.format(date);                                        // String
 
 
                         // Flight Information
                         String flight_number = jsonObject.getString("flight_number");
                         String mission_name = jsonObject.getString("mission_name");
 
+
+
+
                         // Mission image Patch
                         JSONObject imagePatchObj = jsonObject.getJSONObject("links");
                         String image_patch_link = imagePatchObj.getString("mission_patch_small");
 
+                        //String image_patch_link = "hej";
 
                         // Launch site
                         JSONObject launchSiteObj = jsonObject.getJSONObject("launch_site");
                         String launch_site = launchSiteObj.getString("site_name");
 
+                        //String launch_site = "hej";
 
                         // Fetch nested objects withing "rocket" array
                         JSONObject rocket = jsonObject.getJSONObject("rocket");
                         String rocket_name = rocket.getString("rocket_name");
+
+                        //String rocket_name = "hej";
+                        // First Stage
+                        JSONObject first_stage = rocket.getJSONObject("first_stage");
+                        JSONArray cores = first_stage.getJSONArray("cores");
+
+
+                        // Cores // Reused
+                        JSONObject reusedObj = cores.getJSONObject(0);
+                        String reusedFS = reusedObj.getString("reused");
+
+                        //String reusedFS = "hej";
+
+                        // Landing intent
+                        JSONObject landingObj = cores.getJSONObject(0);
+                        String landing_intent = landingObj.getString("landing_intent");
+
+                        //String landing_intent = "hej";
 
                         // Second stage
                         JSONObject second_stage = rocket.getJSONObject("second_stage");
                         JSONArray payload = second_stage.getJSONArray("payloads");
 
 
+                        // Fairings
+                        String reused_fairings = "";
+                        if(!rocket.has("fairings")){
+                            JSONObject fairings = rocket.getJSONObject("fairings");
+                            reused_fairings = fairings.getString("reused");
 
-                         // Customer
+                        }else{
+                            reused_fairings = "";
+
+                        }
+
+
+
+
+
+
+
+
+
+                        // Customer
                         JSONObject customerObj = payload.getJSONObject(0);
                         String customerRaw = customerObj.getString("customers");
                         final String customer = customerRaw.substring(2, customerRaw.length()-2).replace("\"", "");
@@ -135,43 +177,15 @@ public class MainActivity extends AppCompatActivity {
                         //String customer = "hej";
 
 
-/*
-                        Collections.sort(data_list, new Comparator<MyData>() {
-                            @Override
-                            public int compare(MyData o1, MyData o2) {
-                                if(datum.after(todaysDate)){
-                                    customerTxt.setText("hejhejhejhej");
-                                }
+                        upComingLaunches data = new upComingLaunches(image_patch_link, flight_number, mission_name, rocket_name,
+                                customer, launch_site, formattedDate, reusedFS, reused_fairings, landing_intent);
 
-                                return o2.getLaunch_date().compareTo(o1.getLaunch_date());
-                            }
-                        });
-*/
-
-
-                        // Upcoming or nah
-                        String upcoming = jsonObject.getString("upcoming");
-                        if(upcoming.contains("true")){
-
-                        }
-                        else if(upcoming.contains("false")){
-
-                        }
-
-
-                        MyData data = new MyData(image_patch_link, flight_number, mission_name, rocket_name, customer, launch_site, formattedDate);
                         data_list.add(data);
-
-
-
-
-
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
-                    } catch (ParseException e) {
-                        e.printStackTrace();
                     }
+                }
 
             }
         }, new Response.ErrorListener() {
